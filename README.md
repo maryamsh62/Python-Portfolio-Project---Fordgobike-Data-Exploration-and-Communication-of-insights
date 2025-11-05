@@ -2,7 +2,7 @@
 
 ## 1. Investigation Overview
 
-This project has two parts that demonstrate the importance and value of data visualization techniques in the data analysis process, which is a Capstone project part of the Udacity Data Analysis Nanodegree course.
+This project has two parts that demonstrate the importance and value of data visualization techniques in the data analysis process, and it is a Capstone project for the Udacity Data Analysis Nanodegree course.
 
 - In the first part (1/2), I used Python visualization libraries to systematically wrangle and explore the origin `2017-fordgobike-tripdata` datafile, starting from plots of single variables and building up to plots of multiple variables.
 
@@ -12,7 +12,7 @@ This project has two parts that demonstrate the importance and value of data vis
 
 ## 2. Dataset Overview
 
-Bay Wheels is the first regional and large-scale bicycle sharing system deployed in California and on the West Coast of the United States. As of January 2018, the Bay Wheels system had over 2,600 bicycles in 262 stations across San Francisco, the East Bay, and San Jose. 
+Bay Wheels is the first regional, large-scale bike-sharing system deployed in California and on the West Coast of the United States. As of January 2018, it operated more than 2,600 bicycles across 262 stations in San Francisco, the East Bay, and San Jose.
 
 On June 28, 2017, the system officially re-launched as Ford GoBike in a partnership with Ford Motor Company. After Motivate's acquisition by Lyft, the system was subsequently renamed to [Bay Wheels](https://www.lyft.com/bikes/bay-wheels) in June 2019.  The system is expected to expand to 7,000 bicycles around 540 stations in San Francisco, Oakland, Berkeley, Emeryville, and San Jose.
 
