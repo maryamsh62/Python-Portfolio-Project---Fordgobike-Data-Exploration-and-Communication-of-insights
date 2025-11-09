@@ -1,72 +1,155 @@
-# Ford-GoBike-Data-Exploration-and-Visualization-of-insights
+# Ford GoBike Data Exploration & Insight Visualization
 
-## 1. Investigation Overview
+This repository documents a two-part exploration of the **2017 Ford GoBike (now Bay Wheels)** bike-sharing trip data. The work was completed as a capstone-style project to demonstrate how **systematic data wrangling** and **effective visualization** can reveal usage patterns, user behavior, and operational insights in a real urban mobility system.
 
-This project has two parts that demonstrate the importance and value of data visualization techniques in the data analysis process, and it is a Capstone project for the Udacity Data Analysis Nanodegree course.
+---
 
-- In the first part (1/2), I used Python visualization libraries to systematically wrangle and explore the origin `2017-fordgobike-tripdata` datafile, starting from plots of single variables and building up to plots of multiple variables.
+## 1. Project Structure
 
-- In this second part of the project (2/2), I present slides with visualizations the interesting relationships, patterns and insights that I discovered in the (in part 1) selected and cleaned dataset.
+This project has **two main parts**:
 
+1. **Exploratory Data Analysis (EDA)**  
+   In this phase, the original trip data (`2017-fordgobike-tripdata.csv`) was cleaned, enriched with time features, and explored from univariate to multivariate levels using Python visualization libraries.
 
+2. **Communicating the Findings**  
+   In the second phase, the most compelling patterns were turned into presentation-ready visualizations and organized into an HTML slide deck (reveal.js) to tell a clear story about rider behavior.
+
+---
 
 ## 2. Dataset Overview
 
-Bay Wheels is the first regional, large-scale bike-sharing system deployed in California and on the West Coast of the United States. As of January 2018, it operated more than 2,600 bicycles across 262 stations in San Francisco, the East Bay, and San Jose.
+**Context.**  
+Ford GoBike (now **Bay Wheels**) is the first large-scale bike-sharing system on the U.S. West Coast. As of January 2018, it operated ~2,600 bikes across more than 260 stations in the San Francisco Bay Area (San Francisco, East Bay, and San Jose). The system was launched as Ford GoBike on **June 28, 2017** and later rebranded to **Bay Wheels** after Lyft’s acquisition of Motivate in 2019.
 
-On June 28, 2017, the system officially re-launched as Ford GoBike in a partnership with Ford Motor Company. After Motivate's acquisition by Lyft, the system was subsequently renamed to [Bay Wheels](https://www.lyft.com/bikes/bay-wheels) in June 2019.  The system is expected to expand to 7,000 bicycles around 540 stations in San Francisco, Oakland, Berkeley, Emeryville, and San Jose.
+**Data source.**  
+The original data file used in this project:
 
-The dataset used for this exploratory analysis consists of Bay Wheels' trip data for individual rides made in a bike-sharing system covering the greater San Francisco Bay area from June 28, 2017, to December 31, 2017. The original dataset `2017-fordgobike-tripdata.csv` can be found in the download [here](https://www.lyft.com/bikes/bay-wheels/system-data).
+- **`2017-fordgobike-tripdata.csv`**  
+- Covers trips from **June 28, 2017 to December 31, 2017**  
+- Publicly available from Bay Wheels system data:  
+  https://www.lyft.com/bikes/bay-wheels/system-data
 
-The Dataset consists of anonymized information regarding 519.700 bike trips, including their timing and the geolocation of the start and end of each trip. 
+**Data contents.**  
+The dataset contains **~519,700 anonymized trips**, each with:
 
+- Start/end times  
+- Start/end station locations  
+- Trip duration  
+- Rider type (`Subscriber` vs `Customer`)  
+- Basic demographics (in original raw data)
 
-## 3. Wrangle/Clean to create cleaned datafile `fordgobike-tridata_clean.csv` (part 1)
+This volume and structure make it ideal for temporal, behavioral, and operational analysis.
 
-To improve robustness and enable bi-/multivariate exploration, I removed extreme outliers using a Z-score threshold of |z| > 5. This resulted in excluding all trips with duration_min > 44 minutes.
+---
 
-Further we created several start_variables with different time-resolution (start_hour_of_day, start_day_of_week, start_month). Plus, I corrected some data types.
+## 3. Data Cleaning & Feature Engineering (`fordgobike-tridata_clean.csv`)
 
-In the data exploration, we used mainly the following features in the cleaned data file `fordgobike-tridata_clean.csv`:
+To make the dataset suitable for bi- and multivariate analysis, several cleaning steps were applied:
 
->- user_type (values: “Subscriber” or “Customer”)
->- duration_min (duration of trip in minutes) 
->- start_date  (date of start of biketrip) 
->- start_hour_of_day  (hour of start of biketrip) 
->- start_day_of_week  (day of week of start of biketrip) 
->- start_month  (month of start of biketrip) 
+1. **Outlier handling**  
+   - Trip duration was filtered using a Z-score rule of **|z| > 5**.  
+   - This effectively removed extreme trips, resulting in an upper bound of **~44 minutes** for `duration_min`.  
+   - Rationale: the bulk of bike-share usage is short and urban; keeping extreme values would distort distributions and visualizations.
 
+2. **Time-based feature creation**  
+   From the trip start time, the following engineered features were added to enable temporal usage analysis:
+   - `start_hour_of_day` (0–23)
+   - `start_day_of_week` (Monday–Sunday)
+   - `start_month`
 
+3. **Data type fixes**  
+   Some columns were converted to appropriate types (e.g. datetime) to support grouping and plotting.
 
-## 4. Summary of Findings of Data Exploration (part 1)
+**Key variables used throughout the analysis:**
 
-In the exploration I found regarding the main variables of interest:
-- Definitely, each of these graphs reinforces the general hypothesis that customers are more like recreational users, and subscribers tend to be people who use them to go to work or school:
-  - Subscribers mainly hire a bike during weekdays (more than double the level of weekdays), and Customers hire especially on the weekend.
-  - The bike trip duration of Customers is about double that of Subscribers (18 vs 10 minutes).
-  - A significantly higher trip duration during weekend days by Customers. The duration is about 18.5 minutes on weekend days, which is about 10% higher than the highest score during a weekday.
-- But the last (multivariate explorations) help us get even more detail about the patterns of use on an hourly level over the whole course of a week, and the differences between Customers and Subscribers.
-  - For both types of users, the distribution of rides during the weekdays depends a lot on the hour of the day and day of the week. 
-  - It is interesting that Customers tend to use the bike service mostly on Saturday/Sunday from 12 PM to 5 PM, while Subscribers will likely have a trip from Monday to Friday during rush hours (8-9 AM, 5-6 PM).
+- `user_type` — `"Subscriber"` or `"Customer"`
+- `duration_min` — trip duration in minutes
+- `start_date`
+- `start_hour_of_day`
+- `start_day_of_week`
+- `start_month`
 
-Outside of the main variables of interest, I found:
-- Also, the location of the end destination station matters as a variable for predicting bike usage; the destination `The Embarcadero at Sansome St` has the highest trip duration (about 30-40% higher) compared with other destinations. This has probably a relation with the fact that the station is located at a great tourist/recreation area, which ... can make you understand why the bike trips by Customers take long... :)
+The cleaned dataset was saved as:
 
+- **`fordgobike-tridata_clean.csv`**
 
->Note: The Data Exploration has been done in notebook `exploration_GoBikes_by_DirkKadijk1.0.ipynb`.
+---
 
+## 4. Exploratory Findings (Part 1)
 
-## 5. Key Insights for Presentation slides (part 2)
+The EDA focused on understanding **who uses the system, when they use it, and how long they ride**. The core insight that emerged is that **Subscribers and Customers exhibit clearly different behavior patterns**.
 
-In this presentation, I analyze the relationship between ride volume, trip duration, and user type (Customers vs. Subscribers).
+### 4.1 User-Type Behavior
 
-I begin with a bar chart showing the distribution of trip counts across the two user types.
+- **Subscribers**  
+  - Ride mostly on **weekdays**  
+  - Show clear **commute peaks** (8–9 AM and 5–6 PM)  
+  - Have **shorter trips** on average (≈ **10 minutes**)
+  - Likely using the service for **work/school commuting**
 
-Followed by the distribution of biketrip duration for each user_type (2 histograms side-by-side).
+- **Customers** (casual users / non-members)  
+  - Ride more on **weekends**  
+  - Have **longer trips** (≈ **18 minutes**, about **2×** Subscribers)  
+  - Weekend trips (Sat/Sun) are about **10% longer** than weekday trips  
+  - Likely using the service for **recreational / tourist** purposes  
+  - Highest activity window: **12 PM–5 PM on weekends**
 
-Next, I show side-by-side heatmaps of trip counts by hour of day and day of week for each user type. The 7×24 grid reveals weekly usage patterns and clearly highlights differences between Customers and Subscribers.
+### 4.2 Temporal Patterns
 
-Finally, I present a clustered bar chart of average trip duration by start day of week across the top 10 end stations. This shows that the destination station is an important factor influencing bike usage and trip duration.
+- Usage across the week shows a **strong 7×24 structure**:
+  - Weekdays: strong AM and PM commute peaks (especially for Subscribers)
+  - Weekends: flatter but higher mid-day usage (especially for Customers)
 
+- This pattern becomes most visible in **heatmaps** of:
+  - `start_day_of_week` × `start_hour_of_day`
+  - Segmented by `user_type`
 
->Note: Click on the file `2_slide_deck_GoBikes_by_DirkKadijk1.0.slides.html` to start the interactive presentation, which is a Jupyter notebook in an HTML slide format (based on the reveal.js library). Click to navigate to left/right/up/down to see all (optional) slides and press ESC for an overview of slides.
+### 4.3 Location Effects
+
+- Certain **destination stations** show **significantly higher trip durations**, especially:
+  - **“The Embarcadero at Sansome St”**  
+  - Likely due to being in a **touristic/recreational** area  
+  - This supports the hypothesis that **trip purpose** and **end-location** influence trip duration
+
+---
+
+## 5. Key Insights for Presentation (Part 2)
+
+The second part of the project focuses on **communicating** the analysis results. The selected visualizations tell a progressive story:
+
+1. **User type distribution**  
+   - Bar chart comparing total trips by `user_type`
+   - Shows the system is **dominated by Subscribers**, but Customers are an important segment with different behavior
+
+2. **Trip duration by user type**  
+   - Side-by-side histograms or boxplots  
+   - Makes the **“Customers ride longer”** insight immediately visible
+
+3. **Weekly usage heatmaps**  
+   - 7 (days) × 24 (hours) heatmaps for **each** user type  
+   - Reveals:
+     - Commute pattern for Subscribers
+     - Leisure/tourist pattern for Customers
+
+4. **Trip duration by day and destination**  
+   - Clustered bar chart of **average trip duration** by **start day of week** for **top 10 end stations**  
+   - Shows that **where** a trip ends can be as important as **when** it starts
+
+**Presentation file:**  
+- `2_slide_deck_GoBikes_by_DirkKadijk1.0.slides.html`  
+- Built from a Jupyter Notebook using **reveal.js**  
+- Navigation: use arrow keys (← → ↑ ↓), press **ESC** for overview
+
+---
+
+## 6. Files in This Project
+
+- 2017-fordgobike-tripdata.csv                # Original raw dataset (source: Bay Wheels)
+
+- fordgobike-tridata_clean.csv                # Cleaned and feature-enriched dataset
+
+- exploration_GoBikes_by_DirkKadijk1.0.ipynb  # Notebook with full EDA (part 1)
+
+- 2_slide_deck_GoBikes_by_DirkKadijk1.0.slides.html  # Presentation (part 2)
+
+- README.md
